@@ -1,0 +1,439 @@
+{
+  "info": {
+    "_postman_id": "payment-gateway-api",
+    "name": "Mini Payment Gateway API",
+    "description": "Comprehensive API documentation for the Mini Payment Gateway system with HMAC signature examples",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"merchant@example.com\",\n  \"password\": \"SecurePass@123\",\n  \"business_name\": \"My Business\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new merchant user"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"merchant@example.com\",\n  \"password\": \"SecurePass@123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login and receive JWT tokens"
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "refresh"]
+            },
+            "description": "Refresh access token using refresh token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "profile"]
+            },
+            "description": "Get current user profile"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Merchants",
+      "item": [
+        {
+          "name": "Create Merchant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"business_name\": \"My Business Inc\",\n  \"webhook_url\": \"https://example.com/webhook\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/merchants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "merchants"]
+            },
+            "description": "Create merchant account for current user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Merchant",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/merchants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "merchants"]
+            },
+            "description": "Get merchant details"
+          },
+          "response": []
+        },
+        {
+          "name": "Rotate Credentials",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/merchants/rotate-credentials",
+              "host": ["{{base_url}}"],
+              "path": ["api", "merchants", "rotate-credentials"]
+            },
+            "description": "Rotate API credentials"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Webhook",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"webhook_url\": \"https://example.com/new-webhook\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/merchants/webhook",
+              "host": ["{{base_url}}"],
+              "path": ["api", "merchants", "webhook"]
+            },
+            "description": "Update merchant webhook URL"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/merchants/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "merchants", "stats"]
+            },
+            "description": "Get merchant transaction statistics"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Create Checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100.00,\n  \"currency\": \"USD\",\n  \"customer_email\": \"customer@example.com\",\n  \"metadata\": {\n    \"order_id\": \"ORD123\",\n    \"product\": \"Premium Plan\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transactions/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "checkout"]
+            },
+            "description": "Create a checkout session (transaction)"
+          },
+          "response": []
+        },
+        {
+          "name": "Process Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"{{transaction_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transactions/pay",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "pay"]
+            },
+            "description": "Process payment for transaction"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transaction History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transactions/history?status=completed&limit=20&skip=0",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "history"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "completed"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "skip",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "Get transaction history with filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transaction Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transactions/{{transaction_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "{{transaction_id}}"]
+            },
+            "description": "Get details for a specific transaction"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transaction Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transactions/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "summary"]
+            },
+            "description": "Get transaction summary statistics"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "HMAC Signed Request Example",
+      "item": [
+        {
+          "name": "Create Checkout with HMAC Signature",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "X-Signature",
+                "value": "{{hmac_signature}}",
+                "description": "HMAC-SHA256 signature of the request"
+              },
+              {
+                "key": "X-Merchant-Id",
+                "value": "{{merchant_id}}",
+                "description": "Merchant ID making the request"
+              },
+              {
+                "key": "X-Timestamp",
+                "value": "{{timestamp}}",
+                "description": "Current Unix timestamp (must be within 5 minutes)"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100.00,\n  \"currency\": \"USD\",\n  \"customer_email\": \"customer@example.com\",\n  \"metadata\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transactions/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "checkout"]
+            },
+            "description": "Example of creating a transaction with HMAC signature verification. The signature is calculated as follows:\n\nMessage = POST|/api/transactions/checkout|{\"amount\":100.00,\"currency\":\"USD\",\"customer_email\":\"customer@example.com\",\"metadata\":{}}|1675123456\n\nSignature = HMAC-SHA256(Message, API_SECRET)\n\nThe signature must be generated using your merchant's API secret."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "merchant_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "transaction_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "api_secret",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "timestamp",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hmac_signature",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

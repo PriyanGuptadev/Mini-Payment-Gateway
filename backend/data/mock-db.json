@@ -1,0 +1,22 @@
+{
+  "users": {
+    "user_1769773959980": {
+      "_id": "user_1769773959980",
+      "email": "test@example.com",
+      "password_hash": "$2b$12$yvcjraoCrtuO7VF.x9a59uyyW0m.f/tCBF0UXJGmHNaUG2aHhCvCK",
+      "role": "MERCHANT",
+      "business_name": "",
+      "createdAt": "2026-01-30T11:52:39.980Z"
+    },
+    "user_1769774169754": {
+      "_id": "user_1769774169754",
+      "email": "newuser@example.com",
+      "password_hash": "$2b$12$jwqRvIQSpBy4k3Wfn9RFSeC3qT0W4Wy4WZoGMeljDg0jrHm.lzjDa",
+      "role": "MERCHANT",
+      "business_name": "",
+      "createdAt": "2026-01-30T11:56:09.754Z"
+    }
+  },
+  "merchants": {},
+  "transactions": {}
+}
